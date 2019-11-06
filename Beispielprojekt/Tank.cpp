@@ -9,17 +9,18 @@
 
 #include "Vektor2d.h"
 
+using namespace std;
+
 class panzer{
 private:
 		
-	double x;
-	double y;
-
-
-public:
+	double x = 0;
+	double y = 0;
 	Gosu::Image panzerbild;
 
-	panzer(double x, double y, ) : x(x), y(y) {}
+public:
+
+	panzer(double x, double y, string img) : x(x), y(y), panzerbild(img) {}
 
 	void set_x(double x) {
 		this->x = x;
@@ -36,22 +37,32 @@ public:
 		return this->y;
 	}
 
+	Gosu::Image get_bild() {
+		return this->panzerbild;
+	}
+
 
 
 };
 
 
+
+
+
+panzer p1( 0, 0, "Panzer.png" );
+
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
-
-
 double press = 0;
+
+
 
 class GameWindow : public Gosu::Window
 {
 public:
-	Gosu::Image panzer;
-	GameWindow(): Window(800, 600), panzer("Panzer.png")
+	//Gosu::Image panzer;
+	//GameWindow() : Window(800, 600), panzer("Panzer.png")
+	GameWindow(): Window(800, 600), p1.get_bild()
 	{
 		set_caption("PANZAAA");
 	}
@@ -61,7 +72,7 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{
-		panzer.draw_rot(panzer.get_x(), panzer.y, 0.0,
+		panzer.draw_rot(p1.get_x(), p1.get_y(),
 			press, // Rotationswinkel in Grad
 			0.5, 0.5 // Position der "Mitte" relativ zu x, y
 		);
@@ -71,8 +82,8 @@ public:
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
-		panzer.x = input().mouse_x();
-		panzer.y = input().mouse_y();
+		p1.set_x(input().mouse_x());
+		p1.set_y(input().mouse_y());
 
 
 
