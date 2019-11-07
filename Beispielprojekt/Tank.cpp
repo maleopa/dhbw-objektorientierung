@@ -61,7 +61,7 @@ public:
 	//GameWindow() : Window(800, 600), panzer("Panzer.png")
 	GameWindow(): Window(800, 600)
 	{
-		set_caption("PANZAAA");
+		set_caption("PANZAAAA");
 	}
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
