@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class panzer{
+class panzer {
 private:
 		
 	double x = 0;
@@ -19,8 +19,9 @@ private:
 	Gosu::Image panzerbild;
 
 public:
+	
 
-	panzer(double x, double y, string img) : x(x), y(y), panzerbild(img) {}
+	panzer() : x(x), y(y), panzerbild("panzer.png") {}
 
 	void set_x(double x) {
 		this->x = x;
@@ -37,19 +38,14 @@ public:
 		return this->y;
 	}
 
-	Gosu::Image get_bild() {
-		return this->panzerbild;
+	void draw_panzer() {
+		panzerbild.draw_rot(this->x, this->y, 0,5, 0.5, 0.5);
 	}
 
 
 
 };
 
-
-
-
-
-panzer p1( 0, 0, "Panzer.png" );
 
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
@@ -60,9 +56,10 @@ double press = 0;
 class GameWindow : public Gosu::Window
 {
 public:
+	panzer p1;
 	//Gosu::Image panzer;
 	//GameWindow() : Window(800, 600), panzer("Panzer.png")
-	GameWindow(): Window(800, 600), p1.get_bild()
+	GameWindow(): Window(800, 600)
 	{
 		set_caption("PANZAAA");
 	}
@@ -72,10 +69,7 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{
-		panzer.draw_rot(p1.get_x(), p1.get_y(),
-			press, // Rotationswinkel in Grad
-			0.5, 0.5 // Position der "Mitte" relativ zu x, y
-		);
+		p1.draw_panzer();
 
 	}
 
