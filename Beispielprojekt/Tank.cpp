@@ -11,6 +11,9 @@
 
 using namespace std;
 
+double press = 0;
+
+
 class panzer {
 private:
 		
@@ -39,7 +42,7 @@ public:
 	}
 
 	void draw_panzer() {
-		panzerbild.draw_rot(this->x, this->y, 0,5, 0.5, 0.5);
+		panzerbild.draw_rot(this->x, this->y, 0.5, press, 0.5, 0.5);
 	}
 
 
@@ -49,7 +52,6 @@ public:
 
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
-double press = 0;
 
 
 
@@ -64,6 +66,28 @@ public:
 		set_caption("P");
 	}
 
+	double y_achse(double a) {
+
+		if (input().down(Gosu::KB_DOWN)) {
+			a += 3.5;
+		}
+		else if (input().down(Gosu::KB_UP)) {
+			a -= 3.5;
+		}
+		return a;
+	}
+
+	double x_achse(double a) {
+
+		if (input().down(Gosu::KB_RIGHT)) {
+			a += 3.5;
+		}
+		else if (input().down(Gosu::KB_LEFT)) {
+			a -= 3.5;
+		}
+		return a;
+	}
+
 	// wird bis zu 60x pro Sekunde aufgerufen.
 	// Wenn die Grafikkarte oder der Prozessor nicht mehr hinterherkommen,
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
@@ -76,20 +100,27 @@ public:
 	// Wird 60x pro Sekunde aufgerufen
 	void update() override
 	{
-		p1.set_x(input().mouse_x());
-		p1.set_y(input().mouse_y());
+		
+		
+		
+		
+		
+		p1.set_x(x_achse(p1.get_x()));
+		p1.set_y(y_achse(p1.get_y()));
 
 
 
-		if (input().down(Gosu::KB_LEFT)) {
-			press += 10;
+
+		if (input().down(Gosu::KB_S)) {
+			press += 2;
 		}
-		else if (input().down(Gosu::KB_RIGHT)) {
-			press -= 10;
+		else if (input().down(Gosu::KB_A)) {
+			press -= 2;
 		}
 
 	}
 };
+
 
 // C++ Hauptprogramm
 int main()
