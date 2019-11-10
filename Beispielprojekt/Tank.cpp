@@ -6,32 +6,45 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <math.h>
 
 #include "Vektor2d.h"
 
 using namespace std;
-
-double press = 0;
-
 
 class panzer {
 private:
 		
 	double x = 0;
 	double y = 0;
+	double winkel = 0;
 	Gosu::Image panzerbild;
 
 public:
 	
 
-	panzer() : x(x), y(y), panzerbild("panzer.png") {}
+	panzer() : x(x), y(y), winkel(winkel), panzerbild("panzer.png") {}
 
-	void set_x(double x) {
-		this->x = x;
+	void set_x(double x, double w) {
+		this->x = x*cos(w);
 	}
 
-	void set_y(double y) {
-		this->y = y;
+	void set_y(double y, double w) {
+		this->y = y*sin(w);
+	}
+
+	void set_winkel(double w) {
+		double neu_winkel = this->winkel + w;
+		if (neu_winkel > 359) {
+			this->winkel = 360 - neu_winkel;
+		}
+		else if (neu_winkel < 0) {
+			this->winkel = 360 + neu_winkel;
+		}
+		else {
+			this->winkel = neu_winkel;
+		}
+
 	}
 
 	double get_x() {
@@ -41,14 +54,34 @@ public:
 		return this->y;
 	}
 
+	double get_winkel() {
+		return this->winkel;
+	}
+
+
+
 	void draw_panzer() {
-		panzerbild.draw_rot(this->x, this->y, 0.5, press, 0.5, 0.5);
+		panzerbild.draw_rot(this->x, this->y, 0.5, this->winkel, 0.5, 0.5);
 	}
 
 
 
 };
 
+class hintergrund {
+private:
+	double x=0;
+	double y=0;
+	Gosu::Image hbild;
+
+public:
+
+	hintergrund() : hbild() {}
+
+	void draw_hintergund() {
+		hbild.draw_rot(this->x, this->y,0,0);
+	}
+};
 
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
@@ -77,16 +110,6 @@ public:
 		return a;
 	}
 
-	double x_achse(double a) {
-
-		if (input().down(Gosu::KB_RIGHT)) {
-			a += 3.5;
-		}
-		else if (input().down(Gosu::KB_LEFT)) {
-			a -= 3.5;
-		}
-		return a;
-	}
 
 	// wird bis zu 60x pro Sekunde aufgerufen.
 	// Wenn die Grafikkarte oder der Prozessor nicht mehr hinterherkommen,
@@ -105,17 +128,20 @@ public:
 		
 		
 		
-		p1.set_x(x_achse(p1.get_x()));
-		p1.set_y(y_achse(p1.get_y()));
+		
+		//p1.set_y(y_achse(p1.get_y()))
+
+		p1.set_x(y_achse(p1.get_x()),p1.get_winkel());
+		p1.set_y(y_achse(p1.get_y()), p1.get_winkel());
+
+		cout << p1.get_winkel() << endl;
 
 
-
-
-		if (input().down(Gosu::KB_S)) {
-			press += 2;
+		if (input().down(Gosu::KB_RIGHT)) {
+			p1.set_winkel(2);
 		}
-		else if (input().down(Gosu::KB_A)) {
-			press -= 2;
+		else if (input().down(Gosu::KB_LEFT)) {
+			p1.set_winkel(-2);
 		}
 
 	}
