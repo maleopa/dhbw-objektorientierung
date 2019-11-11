@@ -18,6 +18,7 @@ private:
 	double x = 0;
 	double y = 0;
 	double winkel = 0;
+	double betrag = 0;
 	Gosu::Image panzerbild;
 
 public:
@@ -26,11 +27,11 @@ public:
 	panzer() : x(x), y(y), winkel(winkel), panzerbild("panzer.png") {}
 
 	void set_x(double x, double w) {
-		this->x = x*cos(w);
+		this->x = x;
 	}
 
 	void set_y(double y, double w) {
-		this->y = y*sin(w);
+		this->y = y;
 	}
 
 	void set_winkel(double w) {
@@ -46,7 +47,7 @@ public:
 		}
 
 	}
-
+	
 	double get_x() {
 		return this->x;
 	}
@@ -58,10 +59,19 @@ public:
 		return this->winkel;
 	}
 
+	double get_betrag() {
+		return this->betrag;
+	}
 
 
 	void draw_panzer() {
 		panzerbild.draw_rot(this->x, this->y, 0.5, this->winkel, 0.5, 0.5);
+	}
+
+	double betrag_berechnung() {
+		double betrag;
+		betrag = sqrt((this->get_x()* this->get_x())+ (this->get_y() * this->get_y()));
+		return this->betrag = betrag;
 	}
 
 
@@ -83,9 +93,19 @@ public:
 	}
 };
 
+double y_achse(double a) {
+
+	if (Gosu::Input::down(Gosu::KB_DOWN)) {
+		a += 3.5;
+	}
+	else if (Gosu::Input::down(Gosu::KB_UP)) {
+		a -= 3.5;
+	}
+	return a;
+}
+
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
-
 
 
 class GameWindow : public Gosu::Window
@@ -98,19 +118,7 @@ public:
 	{
 		set_caption("P");
 	}
-
-	double y_achse(double a) {
-
-		if (input().down(Gosu::KB_DOWN)) {
-			a += 3.5;
-		}
-		else if (input().down(Gosu::KB_UP)) {
-			a -= 3.5;
-		}
-		return a;
-	}
-
-
+	
 	// wird bis zu 60x pro Sekunde aufgerufen.
 	// Wenn die Grafikkarte oder der Prozessor nicht mehr hinterherkommen,
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
@@ -124,17 +132,11 @@ public:
 	void update() override
 	{
 		
-		
-		
-		
-		
-		
-		//p1.set_y(y_achse(p1.get_y()))
-
 		p1.set_x(y_achse(p1.get_x()),p1.get_winkel());
 		p1.set_y(y_achse(p1.get_y()), p1.get_winkel());
 
-		cout << p1.get_winkel() << endl;
+		//cout << p1.get_winkel() << endl;
+		cout << p1.get_betrag() << endl;
 
 
 		if (input().down(Gosu::KB_RIGHT)) {
