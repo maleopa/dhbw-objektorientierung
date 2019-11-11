@@ -104,6 +104,16 @@ double y_achse(double a) {
 	return a;
 }
 
+void rechts_links(panzer* p) {
+	if (Gosu::Input::down(Gosu::KB_RIGHT)) {
+		p->set_winkel(2);
+	}
+	else if (Gosu::Input::down(Gosu::KB_LEFT)) {
+		p->set_winkel(-2);
+	}
+}
+
+
 // Simulationsgeschwindigkeit
 const double DT = 100.0;
 
@@ -137,14 +147,10 @@ public:
 
 		//cout << p1.get_winkel() << endl;
 		cout << p1.get_betrag() << endl;
+	
+		rechts_links(&p1);
 
-
-		if (input().down(Gosu::KB_RIGHT)) {
-			p1.set_winkel(2);
-		}
-		else if (input().down(Gosu::KB_LEFT)) {
-			p1.set_winkel(-2);
-		}
+		
 
 	}
 };
