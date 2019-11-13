@@ -18,7 +18,7 @@ private:
 		
 	
 	double winkel = 0;
-	double g = 0;
+	double betrag = 0;
 	double x = 0;
 	double y = 0;
 	Gosu::Image panzerbild;
@@ -32,11 +32,13 @@ public:
 
 	
 	void set_x() {
-		this->x = this->x + this->g * sin(this->winkel);
+		double bogen = (this->winkel) /( 180 *3.14);
+		this->x = this->betrag * sin(bogen);
 	}
 
 	void set_y() {
-		this->y = this->y + this->g * cos(this->winkel);;
+		double bogen = (this->winkel) / (180 * 3.14);
+		this->y = this->betrag * cos(bogen);;
 	}
 
 	
@@ -65,10 +67,7 @@ public:
 	double get_winkel() {
 		return this->winkel;
 	}
-	void set_g(double g) {
-		this->g = this->g +g;
-	}
-/*
+	/*
 	double get_betrag() {
 		return this->betrag;
 	}
@@ -78,12 +77,12 @@ public:
 		this->betrag = sqrt((this->get_x() * this->get_x()) + (this->get_y() * this->get_y()));
 	}
 
-
+*/
 
 	void set_betrag(double b) {
 		this->betrag = this->betrag + b;
 	}
-*/	
+	
 
 	void draw_panzer() {
 		panzerbild.draw_rot(this->x, this->y, 0.5, this->winkel, 0.5, 0.5);
@@ -109,10 +108,10 @@ public:
 void hoch_runter(panzer* p) {
 
 	if (Gosu::Input::down(Gosu::KB_DOWN)) {
-		p->set_g(-0.02);
+		p->set_betrag(-2);
 	}
 	else if (Gosu::Input::down(Gosu::KB_UP)) {
-		p->set_g(0.02);
+		p->set_betrag(2);
 	}
 }
 
