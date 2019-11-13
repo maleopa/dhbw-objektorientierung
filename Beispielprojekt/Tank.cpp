@@ -12,28 +12,34 @@
 
 using namespace std;
 
+
 class panzer {
 private:
 		
 	
 	double winkel = 0;
-	double betrag = 0;
+	double g = 0;
 	double x = 0;
 	double y = 0;
 	Gosu::Image panzerbild;
+
+	
 
 public:
 	
 
 	panzer() : x(x), y(y), winkel(winkel), panzerbild("panzer.png") {}
 
+	
 	void set_x() {
-		this->x = this->betrag * cos(this->winkel);
+		this->x = this->x + this->g * sin(this->winkel);
 	}
 
 	void set_y() {
-		this->y = this->betrag * sin(this->winkel);
+		this->y = this->y + this->g * cos(this->winkel);;
 	}
+
+	
 
 	void set_winkel(double w) {
 		double neu_winkel = this->winkel + w;
@@ -59,24 +65,29 @@ public:
 	double get_winkel() {
 		return this->winkel;
 	}
-
+	void set_g(double g) {
+		this->g = this->g +g;
+	}
+/*
 	double get_betrag() {
 		return this->betrag;
 	}
 
 
-	void draw_panzer() {
-		panzerbild.draw_rot(this->x, this->y, 0.5, this->winkel, 0.5, 0.5);
+	void set_betrag() {
+		this->betrag = sqrt((this->get_x() * this->get_x()) + (this->get_y() * this->get_y()));
 	}
 
-	double betrag_berechnung() {
-		return this->betrag = sqrt((this->get_x() * this->get_x()) + (this->get_y() * this->get_y()));
-	}
+
 
 	void set_betrag(double b) {
 		this->betrag = this->betrag + b;
 	}
+*/	
 
+	void draw_panzer() {
+		panzerbild.draw_rot(this->x, this->y, 0.5, this->winkel, 0.5, 0.5);
+	}
 
 };
 
@@ -98,10 +109,10 @@ public:
 void hoch_runter(panzer* p) {
 
 	if (Gosu::Input::down(Gosu::KB_DOWN)) {
-		p->set_betrag(-2);
+		p->set_g(-0.02);
 	}
 	else if (Gosu::Input::down(Gosu::KB_UP)) {
-		p->set_betrag(2);
+		p->set_g(0.02);
 	}
 }
 
@@ -143,14 +154,15 @@ public:
 	void update() override
 	{
 		
-		p1.set_x();
-		p1.set_y();
+		
 
-		//cout << p1.get_winkel() << endl;
-		cout << p1.get_betrag() << endl;
+		//cout << p1.get_betrag() << endl;
+	
 	
 		hoch_runter(&p1);
 		rechts_links(&p1);
+		p1.set_x();
+		p1.set_y();
 
 		
 
