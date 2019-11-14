@@ -35,6 +35,7 @@ public:
 		this->x = this->x + this->v * cos((this->winkel-90)/180*3.14);
 		this->y = this->y + this->v * sin((this->winkel-90) / 180 * 3.14);
 	}
+	
 	void set_v(double v){
 		this->v = v;
 	}
@@ -63,19 +64,7 @@ public:
 	double get_winkel() {
 		return this->winkel;
 	}
-	/*
-	double get_betrag() {
-		return this->betrag;
-	}
-
-
-	void set_betrag() {
-		this->betrag = sqrt((this->get_x() * this->get_x()) + (this->get_y() * this->get_y()));
-	}
-
-*/
-
-
+	
 	void draw_panzer() {
 		panzerbild.draw_rot(this->x, this->y, 0.5, this->winkel, 0.5, 0.5);
 	}
@@ -131,11 +120,10 @@ class GameWindow : public Gosu::Window
 {
 public:
 	panzer p1;
-	//Gosu::Image panzer;
-	//GameWindow() : Window(800, 600), panzer("Panzer.png")
+	
 	GameWindow(): p1(300, 400, 0, 0), Window(800, 600)
 	{
-		set_caption("P");
+		set_caption("Panzer");
 		
 	}
 	
