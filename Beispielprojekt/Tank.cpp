@@ -18,9 +18,9 @@ private:
 		
 	
 	double winkel = 0;
-	double betrag = 0;
-	double x = 0;
-	double y = 0;
+	double x;
+	double y;
+	double v;
 	Gosu::Image panzerbild;
 
 	
@@ -28,21 +28,17 @@ private:
 public:
 	
 
-	panzer() : x(x), y(y), winkel(winkel), panzerbild("panzer.png") {}
+	panzer(double xa, double ya, double wa, double va) : x(xa), y(ya), winkel(wa),v(va), panzerbild("panzer.png") {}
 
 	
-	void set_x() {
-		double bogen = (this->winkel) /( 180 *3.14);
-		this->x = this->betrag * sin(bogen);
+	void move() {
+		this->x = this->x + this->v * cos((this->winkel-90)/180*3.14);
+		this->y = this->y + this->v * sin((this->winkel-90) / 180 * 3.14);
 	}
-
-	void set_y() {
-		double bogen = (this->winkel) / (180 * 3.14);
-		this->y = this->betrag * cos(bogen);;
+	void set_v(double v){
+		this->v = v;
 	}
-
 	
-
 	void set_winkel(double w) {
 		double neu_winkel = this->winkel + w;
 		if (neu_winkel > 359) {
@@ -79,10 +75,6 @@ public:
 
 */
 
-	void set_betrag(double b) {
-		this->betrag = this->betrag + b;
-	}
-	
 
 	void draw_panzer() {
 		panzerbild.draw_rot(this->x, this->y, 0.5, this->winkel, 0.5, 0.5);
@@ -108,10 +100,13 @@ public:
 void hoch_runter(panzer* p) {
 
 	if (Gosu::Input::down(Gosu::KB_DOWN)) {
-		p->set_betrag(-2);
+		p->set_v(-2);
 	}
 	else if (Gosu::Input::down(Gosu::KB_UP)) {
-		p->set_betrag(2);
+		p->set_v(2);
+	}
+	else {
+		p->set_v(0);
 	}
 }
 
@@ -121,6 +116,9 @@ void rechts_links(panzer* p) {
 	}
 	else if (Gosu::Input::down(Gosu::KB_LEFT)) {
 		p->set_winkel(-2);
+	}
+	else {
+		p->set_winkel(0);
 	}
 }
 
@@ -135,9 +133,10 @@ public:
 	panzer p1;
 	//Gosu::Image panzer;
 	//GameWindow() : Window(800, 600), panzer("Panzer.png")
-	GameWindow(): Window(800, 600)
+	GameWindow(): p1(300, 400, 0, 0), Window(800, 600)
 	{
 		set_caption("P");
+		
 	}
 	
 	// wird bis zu 60x pro Sekunde aufgerufen.
@@ -157,11 +156,11 @@ public:
 
 		//cout << p1.get_betrag() << endl;
 	
-	
+		cout << p1.get_x()<<" "<<p1.get_y() << endl;
 		hoch_runter(&p1);
 		rechts_links(&p1);
-		p1.set_x();
-		p1.set_y();
+		p1.move();
+		
 
 		
 
