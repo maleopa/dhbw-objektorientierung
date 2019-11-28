@@ -205,7 +205,7 @@ public:
 		hoch_runter(&p1);
 		rechts_links(&p1);
 		
-		
+	
 		abschuss_move(&r1, &p1);
 		p1.move();
 		r1.move();
