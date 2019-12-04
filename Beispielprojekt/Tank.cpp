@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 #include <math.h>
-
+#include <time.h>
 #include "Vektor2d.h"
 
 using namespace std;
@@ -116,10 +116,12 @@ private:
 
 public:
 
-	hintergrund() : hbild() {}
+	hintergrund() : hbild("Hintergrund.png") {
+
+	}
 
 	void draw_hintergund() {
-		hbild.draw_rot(this->x, this->y,0,0);
+		hbild.draw(this->x, this->y, 0, 1.0, 1.0);
 	}
 };
 
@@ -169,14 +171,15 @@ const double DT = 100.0;
 class GameWindow : public Gosu::Window
 {
 public:
+	hintergrund h1;
 	panzer p1;
 	rakete r1;
-
+	Gosu::Image b2;
 	
-	GameWindow(): p1(300, 400, 0, 0), r1(-10, -10, 0, 0), Window(800, 600)
+	GameWindow(): p1(300, 400, 0, 0), r1(-10, -10, 0, 0), Window(1600, 900),h1(), b2("tank2.png")
 	{
 		set_caption("Panzer");
-		
+		srand(time(NULL));
 	}
 	
 	// wird bis zu 60x pro Sekunde aufgerufen.
@@ -184,9 +187,10 @@ public:
 	// dann werden `draw` Aufrufe ausgelassen und die Framerate sinkt
 	void draw() override
 	{
+		h1.draw_hintergund();
 		p1.draw_panzer();
 		r1.draw_rakete();
-		
+		b2.draw(rand() % 1600, rand() % 900, 1);
 		
 		
 
